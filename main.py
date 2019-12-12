@@ -16,25 +16,37 @@ class GameState (object):
         self.isCross = not self.isCross
         self.__update_current_label()
 
-class FieldBtn (Button) :
-    def __init__(self, parent, game_state: GameState):
-        self.game = game_state
-        super().__init__(parent, text='', command = self.__make_move)
-        self.disable = False
+class GameFieldButton (Button) :
+    
     def __make_move(self):
         if self.disable:
             return
         self['text'] = self.game.current_label # берем крестик или нолик
         self.disable = True # отключаем
         self.game.next_move() # следующий ход
+        self.disable = False
+
+    def __init__(self, parent, game_state: GameState):
+        self.game = game_state
+        self.disable = False
+        super().__init__(parent, text=' ',
+                         fg = '#fff',
+                         bg = '#01a1a1',
+                         font = ('Arial', 24, 'bold'),
+                         width =2,
+                         height = 1,
+                         command = self.__make_move)
+    
 
 class GameField(Frame) :
     ''' Виджет генерирующий поле с кнопками, заданного размера'''
-    pass
+    __init__(self, parent, width = 3, height = 3):
+        super().__init__(parent)
+
 game_state = GameState()
 root = Tk()
 # просто тест
 for i in range(5):
-    btn = FieldBtn(root, game_state)
+    btn = GameFieldButton(root, game_state)
     btn.pack()
 root.mainloop()
