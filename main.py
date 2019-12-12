@@ -11,13 +11,13 @@ class GameState (object):
         self.CROSS_LABEL = '✗'
         self.NULL_LABEL = 'Ѻ'
         self.__update_current_label()
-    
+
     def next_move(self):
         self.isCross = not self.isCross
         self.__update_current_label()
 
 class GameFieldButton (Button) :
-    
+
     def __make_move(self):
         if self.disable:
             return
@@ -36,17 +36,20 @@ class GameFieldButton (Button) :
                          width =2,
                          height = 1,
                          command = self.__make_move)
-    
+
 
 class GameField(Frame) :
     ''' Виджет генерирующий поле с кнопками, заданного размера'''
-    __init__(self, parent, width = 3, height = 3):
+    def __init__(self, parent, game, width = 3, height = 3):
         super().__init__(parent)
+        for row in range(height):
+            for col in range(width):
+                GameFieldButton(self, game).grid(row = row, column = col)
+
 
 game_state = GameState()
 root = Tk()
-# просто тест
-for i in range(5):
-    btn = GameFieldButton(root, game_state)
-    btn.pack()
+field = GameField(root, game_state)
+field.pack()
+
 root.mainloop()
