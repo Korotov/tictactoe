@@ -26,11 +26,15 @@ class FieldBtn (Button) :
             return
         self['text'] = self.game.current_label # берем крестик или нолик
         self.disable = True # отключаем
-        game.next_move() # следующий ход
+        self.game.next_move() # следующий ход
 
 class GameField(Frame) :
     ''' Виджет генерирующий поле с кнопками, заданного размера'''
     pass
 game_state = GameState()
 root = Tk()
+# просто тест
+for i in range(5):
+    btn = FieldBtn(root, game_state)
+    btn.pack()
 root.mainloop()
